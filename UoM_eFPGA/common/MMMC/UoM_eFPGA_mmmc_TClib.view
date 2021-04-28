@@ -1,0 +1,78 @@
+# Version:1.0 MMMC View Definition File
+# Do Not Remove Above Line
+create_op_cond -name BCCOM\
+   -library_file {/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/sky130_fd_sc_hd__ff_n40C_1v95.lib}\
+   -P {1.0}\
+   -V {1.95}\
+   -T {-40.0}
+create_op_cond -name WCCOM\
+   -library_file {/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/sky130_fd_sc_hd__ss_100C_1v60.lib}\
+   -P {1.0}\
+   -V {1.60}\
+   -T {100.0}
+create_op_cond -name TCCOM\
+   -library_file {/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/sky130_fd_sc_hd__tt_025C_1v80.lib}\
+   -P {1.0}\
+   -V {1.8}\
+   -T {25.0}
+create_library_set -name sky130_bc\
+   -timing\
+	{/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/sky130_fd_sc_hd__ff_n40C_1v95.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/LUT4AB.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/RegFile.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/W_IO.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/N_term_single.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/N_term_single2.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/S_term_single.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/S_term_single2.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/CPU_IO.lib}
+create_library_set -name sky130_wc\
+   -timing\
+    	{/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/sky130_fd_sc_hd__ss_100C_1v60.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/LUT4AB.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/RegFile.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/W_IO.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/N_term_single.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/N_term_single2.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/S_term_single.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/S_term_single2.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/CPU_IO.lib}
+create_library_set -name sky130_tc\
+   -timing\
+    	{/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/sky130_fd_sc_hd__tt_025C_1v80.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/LUT4AB.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/RegFile.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/W_IO.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/N_term_single.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/N_term_single2.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/S_term_single.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/S_term_single2.lib \
+	/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/TIMING/CPU_IO.lib}
+create_constraint_mode -name func_mode_ideal_wc\
+   -sdc_files {/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/SDC/pnr/func.ideal.wc.tcl}
+create_constraint_mode -name func_mode_ideal_bc\
+   -sdc_files {/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/SDC/pnr/func.ideal.bc.tcl}
+create_constraint_mode -name func_mode_prop\
+   -sdc_files {/home/nguyendao/SKY130/Innovus/UoM_eFPGA/common/SDC/pnr/func.prop.tcl}
+create_delay_corner -name delay_bc\
+   -library_set {sky130_bc}\
+   -opcond {BCCOM}
+create_delay_corner -name delay_wc\
+   -library_set {sky130_wc}\
+   -opcond {WCCOM}
+create_delay_corner -name delay_tc\
+   -library_set {sky130_tc}\
+   -opcond {TCCOM}
+create_analysis_view -name func_view_wc\
+   -constraint_mode {func_mode_ideal_wc}\
+   -delay_corner {delay_wc}
+create_analysis_view -name func_view_bc\
+   -constraint_mode {func_mode_ideal_bc}\
+   -delay_corner {delay_bc}
+create_analysis_view -name func_view_tc\
+   -constraint_mode {func_mode_ideal_wc}\
+   -delay_corner {delay_tc}
+### for generating timing model of Macro
+set_analysis_view\
+  -setup {func_view_tc}\
+  -hold {func_view_tc}
