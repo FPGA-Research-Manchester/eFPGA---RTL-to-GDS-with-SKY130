@@ -86,5 +86,5 @@ UoM_eFPGA
 - Update CLB, RegFile blocks
 - Provide DSP, BRAM blocks
 - Provide custom cells (e.g., multiplexers)
-- Implement the fabric using the Openane flow
+- Implement the fabric using the Openlane flow
 
