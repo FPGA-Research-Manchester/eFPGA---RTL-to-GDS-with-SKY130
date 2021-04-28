@@ -11,7 +11,9 @@ The fabric consists of 1440 LUT4s (180x CLBs) and 180 LUT5s (45x RegFiles) with 
 </p>
 
 ### Note
-Due to the [issue of routing](https://github.com/FPGA-Research-Manchester/FABulous-SKY130) with the Openlane flow, this version was using Cadence Innovus for physical implementations. The Yosys was used to synthesize the design RTL. 
+- Due to the [issue of routing](https://github.com/FPGA-Research-Manchester/FABulous-SKY130) with the Openlane flow, this version was using Cadence Innovus for physical implementations. 
+- The Yosys was used to synthesize the design RTL. An example can be found [here](https://github.com/FPGA-Research-Manchester/FABulous-SKY130)
+- The Liberty files (.lib) and GDS files for standard cell library need to be coppied from Sky130 PDK to TIMING and GDS folder respectively if using the impl_commands.tcl 
 
 ## Directory Organization
 ```bash
